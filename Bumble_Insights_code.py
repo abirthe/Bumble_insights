@@ -1,17 +1,18 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import os
 # ----------------------------------------
-# STEP 1: Reading Data & Initial Exploration
+# STEP 1: Reading Data.py & Initial Exploration
 # ----------------------------------------
 
-print("STEP 1: Reading Bumble Google Play Store Review Data")
+print("STEP 1: Reading Bumble Google Play Store Review Data.py")
 
 try:
-    bumble_data = pd.read_csv(r"C:\Users\abir4\Downloads\bumble_google_play_reviews.csv")
+    bumble_data = pd.read_csv(r"D:\Data Science\Bumble_Insights\Bumble_insights\bumble_google_play_reviews.csv")
 except FileNotFoundError:
     print("Error: File not found. Please check the file path.")
     exit()
+
 
 print("\nChecking for missing values (any):")
 print(bumble_data.isna().any())
@@ -20,7 +21,7 @@ print("\nTotal missing values per column:")
 print(bumble_data.isna().sum())
 
 # ----------------------------------------
-# STEP 2: Cleaning Data
+# STEP 2: Cleaning Data.py
 # ----------------------------------------
 
 print("\nSTEP 2: Cleaning data (removing nulls and duplicates)")
@@ -62,6 +63,13 @@ score_mode = bumble_data["score"].mode()[0]
 print(f"Average score: {score_mean:.2f}")
 print(f"Standard deviation: {score_std:.2f}")
 
+# Ensure 'visualizations/' directory exists
+os.makedirs("visualizations", exist_ok=True)
+
+# --- Load and preprocess your data here ---
+# bumble_data = pd.read_csv(...)
+# Assume 'bumble_data' and 'score_counts' are already prepared as per your script
+
 # -------------------------
 # Plot 1: Review count per score
 print("\nReview count per score:")
@@ -74,6 +82,7 @@ plt.ylabel("Number of Reviews", fontsize=12, color="darkblue")
 plt.title("Rating vs Number of Reviews", fontsize=16, color="darkred")
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.tight_layout()
+plt.savefig("visualizations/review_count_per_score.png", dpi=300)
 plt.show()
 
 # -------------------------
@@ -83,19 +92,18 @@ thumbs_up_by_score = bumble_data.groupby("score")["thumbsUpCount"].sum().sort_in
 print(thumbs_up_by_score)
 
 plt.figure(figsize=(8,5))
-thumbs_up_by_score.plot(kind='bar', color='lightgreen', edgecolor='black',rot=0)
+thumbs_up_by_score.plot(kind='bar', color='lightgreen', edgecolor='black', rot=0)
 plt.xlabel("Review Score")
 plt.ylabel("Total Thumbs Up")
 plt.title("Total Thumbs Up per Review Score")
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.tight_layout()
+plt.savefig("visualizations/thumbs_up_per_score.png", dpi=300)
 plt.show()
 
 # ----------------------------------------
 # Extract review year from datetime
 bumble_data['review_year'] = bumble_data["at"].dt.year
-
-# Remove rows where year is NaN for year-based analysis
 bumble_data_year = bumble_data.dropna(subset=['review_year'])
 
 # -------------------------
@@ -111,6 +119,7 @@ plt.ylabel("Average Review Score")
 plt.title("Average Review Score Over Years")
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.tight_layout()
+plt.savefig("visualizations/avg_score_per_year.png", dpi=300)
 plt.show()
 
 # -------------------------
@@ -120,12 +129,13 @@ print("\nNumber of each score per year:")
 print(score_dist_per_year)
 
 plt.figure(figsize=(12,6))
-score_dist_per_year.plot(kind='bar', stacked=True, colormap='tab20', edgecolor='black',rot=0)
+score_dist_per_year.plot(kind='bar', stacked=True, colormap='tab20', edgecolor='black', rot=0)
 plt.xlabel("Year")
 plt.ylabel("Number of Reviews")
 plt.title("Score Distribution per Year (Stacked Bar)")
 plt.legend(title="Score", bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
+plt.savefig("visualizations/score_dist_per_year.png", dpi=300)
 plt.show()
 
 # -------------------------
@@ -136,33 +146,33 @@ print("\nAverage review length by score:")
 print(avg_review_len_by_score)
 
 plt.figure(figsize=(8,6))
-avg_review_len_by_score.plot(kind='bar', color='lightblue', edgecolor='black',rot=0)
+avg_review_len_by_score.plot(kind='bar', color='lightblue', edgecolor='black', rot=0)
 plt.xlabel("Review Score")
 plt.ylabel("Average Review Length (characters)")
 plt.title("Average Review Length by Score")
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.tight_layout()
+plt.savefig("visualizations/avg_review_length_by_score.png", dpi=300)
 plt.show()
 
 # -------------------------
 # Plot 6: Average reply time by score (excluding not replied items)
 bumble_data["reply_time"] = bumble_data["repliedAt"] - bumble_data["at"]
-
 positive_reply_time = bumble_data[bumble_data["reply_time"] > pd.Timedelta(0)].copy()
 avg_reply_time_by_score = positive_reply_time.groupby("score")["reply_time"].mean().sort_index()
-print("\nAverage reply time by score ( excluding not replied items):")
+print("\nAverage reply time by score (excluding not replied items):")
 print(avg_reply_time_by_score)
 
-# Convert avg reply time to days for plotting
 avg_reply_time_days = avg_reply_time_by_score.dt.total_seconds() / (3600 * 24)
 
 plt.figure(figsize=(8,6))
-avg_reply_time_days.plot(kind='bar', color='lightcoral', edgecolor='black',rot=0)
+avg_reply_time_days.plot(kind='bar', color='lightcoral', edgecolor='black', rot=0)
 plt.xlabel("Review Score")
 plt.ylabel("Average Reply Time (days)")
 plt.title("Average Reply Time by Review Score (excluding not replied items)")
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.tight_layout()
+plt.savefig("visualizations/avg_reply_time_by_score.png", dpi=300)
 plt.show()
 
 # -------------------------
@@ -173,10 +183,11 @@ print("\nCount of reviews without replies grouped by score:")
 print(no_reply_counts)
 
 plt.figure(figsize=(8,5))
-no_reply_counts.plot(kind='bar', color='orange', edgecolor='black',rot=0)
+no_reply_counts.plot(kind='bar', color='orange', edgecolor='black', rot=0)
 plt.xlabel("Review Score")
 plt.ylabel("Count of Reviews Without Replies")
 plt.title("Count of Reviews Without Replies by Score")
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.tight_layout()
+plt.savefig("visualizations/reviews_without_replies_by_score.png", dpi=300)
 plt.show()
