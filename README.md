@@ -1,20 +1,67 @@
-## Bumble Google Play Reviews Analysis
+**README.md**
 
-This project analyzes 167,000+ user reviews of the Bumble app from the Google Play Store to extract insights into user sentiment, engagement, and platform responsiveness across multiple years.
+# 🔍 Bumble Reviews - Exploratory Data Analysis
 
-### Objectives
+This project analyzes over 160,000 user reviews of the Bumble app from the Google Play Store. The goal is to explore trends in user satisfaction, engagement, and company response behavior.
 
-* Examine patterns in user ratings and review behavior.
-* Identify trends in review length, thumbs-up counts, and reply dynamics.
-* Visualize shifts in user sentiment over time and correlate them with engagement metrics.
+---
 
-### Dataset
+## 📄 Dataset Overview
 
-* **Source**: Google Play Store
-* **Size**: 167,000+ reviews
-* **Features**: Rating, review text, thumbs-up count, developer reply (and timestamp), review date, etc.
+* **Source**: Google Play Store (via Kaggle)
+* **Rows**: 167,000+
+* **Fields**: `score`, `thumbsUpCount`, `at` (date), `content`, `repliedAt`
 
-### Tools & Technologies
+---
 
-* Python (Pandas, NumPy) for data cleaning and manipulation
-* Matplotlib & Seaborn for exploratory data visualization
+## 💡 Key Questions
+
+* What ratings do users leave most often?
+* Which reviews get the most thumbs-up?
+* How do ratings change over the years?
+* How quickly does Bumble reply to reviews?
+* Are longer reviews tied to certain star ratings?
+
+---
+
+## 🔍 Key Insights
+
+* **1-star reviews** receive the **most thumbs-up**, showing community alignment on negative feedback.
+* Average review scores have **declined slightly since 2019**.
+* **3-star reviews** tend to be longer and more thoughtful.
+* Bumble tends to **reply faster** to higher-rated reviews.
+* Many **1- and 2-star reviews** go unanswered.
+
+---
+
+## 📈 Visual Highlights
+
+* Histogram of review counts by score
+* Time-series plot of average score by year
+* Average reply time per score (in days)
+* Distribution of review lengths by score
+
+All plots are saved in the `visualizations/` folder.
+
+---
+
+## ⚙️ How to Run
+
+```bash
+pip install pandas matplotlib
+python Bumble_Insights_code.py
+```
+
+Make sure the dataset is placed in the `data/` folder or update the script path accordingly.
+
+---
+
+## ✍️ License
+
+This project is licensed under the **GNU General Public License v3.0**.
+
+---
+
+## 🚀 Author
+
+**\[Abir]** - Data Enthusiast | Exploring product feedback at scale.
